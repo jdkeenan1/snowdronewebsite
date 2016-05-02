@@ -1,0 +1,68 @@
+<head>
+  <title>Vehicle List</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <div class="outer">
+    <h1 class="title">Vehicle List</h1>
+    <div class="subtitle">Select a Vehicle to program or control it</div>
+    {{> leaderboard}}
+  </div>
+</body>
+
+<template name="leaderboard">
+  <ol class="leaderboard">
+    {{#each vehicles}}
+      {{> vehicle}}
+    {{/each}}
+  </ol>
+
+  {{#if selectedVehicle}}
+    <div class="details">
+      <div class="name">{{selectedVehicle}}</div>
+      {{#each element in GPS_coordinates}}
+        <div class="location">{{element}}</div>
+      {{/each}}
+      <form class="input_GPS">
+        <span class="input_GPS_addon" id="basic-addon1">Coordinates</span>
+        <input type="text" name="text" class="form-control" placeholder="0,0" aria-describedby="basic-addon1">
+        <button class="Update_Coordinates">Change Coordinates!</button>
+      </form>
+      {{> map}}
+      <div class="information">Speed: {{speed}} mph</div>
+      {{update}}
+      <div class="currentLocation">Current Location: {{current_location}}</div>
+      <button class="Clear_Coordinates">Clear Coordinates</button>
+      <button class="Change_State">Change State!</button>
+    </div>
+  {{else}}
+    <div class="message">Click Vehicle to Get More Info</div>
+  {{/if}}
+</template>
+
+<template name="vehicle">
+  <li class="vehicle {{selected}}">
+    <span class="name">{{name}}</span>
+    <span class="status">{{status}}</span>
+    <!-- <span class="status">{{status}}</span> -->
+<!--     <span class="GPS_coordinates">{{GPS_coordinates}}</span>
+ -->  </li>
+</template>
+
+<template name="map">  
+  <div class="map-container" style="width: 800px;max-width: 100%;height: 500px;">
+    {{#unless geolocationError}}
+      {{> googleMap name="map" options=mapOptions}}
+    {{else}}
+      Geolocation failed: {{geolocationError}}
+    {{/unless}}
+  </div>
+</template>  
+
+<template name="gauge1">
+  <div class="outer">
+    <div id="demo1" style="width: 800px;max-width: 100%;height: 500px;"></div>
+  </div>
+</template>
